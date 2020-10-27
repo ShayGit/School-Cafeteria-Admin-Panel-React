@@ -1,8 +1,7 @@
-import {
-  BASE_URL
-} from "../config/keys";
 import axios from "axios";
 import firebase from '../config/firebase'
+
+const {BASE_URL }= require('../config/keys');
 
 const instance = axios.create({
   baseURL: BASE_URL

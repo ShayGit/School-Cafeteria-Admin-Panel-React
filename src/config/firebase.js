@@ -4,14 +4,13 @@ import "firebase/functions";
 
 import * as firebase from "firebase";
 
-import {
-  API_KEY,
+const {API_KEY,
   APP_ID,
   AUTH_DOMAIN,
   DATABASE_URL,
   PROJECT_ID,
-  STORAGE_BUCKET,
-} from "./keys";
+  STORAGE_BUCKET}= require('./keys');
+
 
 // Initialize Firebase
 const firebaseConfig = {
