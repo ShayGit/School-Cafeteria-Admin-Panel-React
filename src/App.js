@@ -1,25 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import React, { useContext } from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+
+import { Context as AuthContext } from "./context/AuthContext";
+import Dashboard from "./components/Dashboard"
+import Login from "./components/Login";
+import PrivateRoute from "./components/PrivateRoute";
+import firebase from "./config/firebase";
 
 function App() {
+  const {
+    state:{isLoading},
+    setLoggedIn,
+  } = useContext(AuthContext);
+ 
+  React.useEffect(() => {
+
+    const listener = firebase.auth().onAuthStateChanged((user) => {
+      console.log("onauth");
+      if (user) {
+        setLoggedIn(true);
+
+      } else {
+        setLoggedIn(false);
+      }
+    });
+    
+    return () => listener;
+  }, []);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    (!isLoading &&
+    <Router>
+      <Switch>
+      <Route  exact path="/login" name="Login Page"> 
+          <Login  />
+        </Route>
+        <PrivateRoute name="Home" path="/">
+          <Dashboard/>
+        </PrivateRoute>
+      </Switch>
+    </Router>
+    )
   );
 }
 
